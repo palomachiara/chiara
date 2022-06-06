@@ -1,5 +1,4 @@
-global-styling:
-version: 1.x
+global:
  js:
 js/script.js: {}
  css:

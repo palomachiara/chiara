@@ -1,10 +1,10 @@
 name: frontend
 type: theme
 description: 'Custom Theme for My Website.'
-core: 8.x
+core_version_requirement: ^8 || ^9
 libraries:
-  - frontend/global-styling
-base theme: classy
+  - frontend/global
+base theme: stable
 regions:
   branding: Branding
   navigation: Main navigation
