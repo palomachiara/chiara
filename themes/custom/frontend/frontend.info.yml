@@ -1,8 +1,7 @@
 name: frontend
 type: theme
 description: 'Custom Theme for My Website.'
-package: Other
-core_version_requirement: ^8 || ^9
+core: 8.x
 libraries:
   - frontend/global-styling
 base theme: classy
