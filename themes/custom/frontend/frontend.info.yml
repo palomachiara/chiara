@@ -4,7 +4,7 @@ description: 'Custom Theme for My Website.'
 core_version_requirement: ^8 || ^9
 libraries:
   - frontend/global
-base theme: stable
+base theme: claro
 regions:
   branding: Branding
   navigation: Main navigation
