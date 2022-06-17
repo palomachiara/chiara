@@ -1,7 +1,0 @@
-name: frontend
-type: theme
-description: 'Custom Theme for My Website.'
-core_version_requirement: ^8 || ^9
-base theme: claro
-libraries:
-  - frontend/global
