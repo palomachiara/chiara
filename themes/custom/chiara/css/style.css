@@ -2,6 +2,51 @@
  * If using a CSS pre-processor, tell it to overwrite this file. If not, place
  * your custom CSS modifications here.
  */
-body{
+ body {
+    background-color: white;
+}
+:root {
+    --primary: #3870E0;
+    --secondary: #37bdde;
+}
+* {
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 100%;
+    font-variant-ligatures: none;
+    font-weight: 400;
     margin: 0;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 0;
+    text-decoration: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -webkit-font-variant-ligatures: none;
+    -webkit-text-size-adjust: 100%;
+    color: #4B5055;
+}
+button {
+    cursor: pointer;
+}
+ul {
+    list-style: none;
+}
+a {
+    display: inline-block;
+}
+
+/* PARTIAL - HEADER ********************************/
+header {
+    position: sticky;
+    left: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: var(--primary);
+}
+header .region.region-header{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
 }
