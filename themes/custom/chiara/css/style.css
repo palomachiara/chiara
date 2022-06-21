@@ -2,12 +2,12 @@
  * If using a CSS pre-processor, tell it to overwrite this file. If not, place
  * your custom CSS modifications here.
  */
- body {
-    background-color: white;
-}
 :root {
-    --primary: #3870E0;
-    --secondary: #37bdde;
+    --primary: #E8E3DF;
+    --secondary: #E8E3DF;
+}
+body {
+    background-color: var(--primary);
 }
 * {
     box-sizing: border-box;
