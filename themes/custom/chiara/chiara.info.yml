@@ -1,25 +1,32 @@
+name: chiara
 type: theme
-base theme: bootstrap
-core: 8.x
-core_version_requirement: ^8 || ^9
-
-name: 'chiara'
-description: 'A Drupal Bootstrap 3 based sub-theme.'
-package: 'Bootstrap'
-
-regions:
-  navigation: 'Navigation'
-  navigation_collapsible: 'Navigation (Collapsible)'
-  header: 'Top Bar'
-  highlighted: 'Highlighted'
-  help: 'Help'
-  content: 'Content'
-  sidebar_first: 'Primary'
-  sidebar_second: 'Secondary'
-  footer: 'Footer'
-  page_top: 'Page top'
-  page_bottom: 'Page bottom'
-
+'base theme': stable9
+hidden: true
+libraries:
+  - chiara/base
+  - chiara/messages
+  - core/normalize
 libraries-extend:
-  bootstrap/framework:
-    - chiara/framework
+  user/drupal.user:
+    - chiara/user
+  core/drupal.dropbutton:
+    - chiara/dropbutton
+  core/drupal.dialog:
+    - chiara/dialog
+  file/drupal.file:
+    - chiara/file
+  core/drupal.progress:
+    - chiara/progress
+  media/media_embed_ckeditor_theme:
+    - chiara/media_embed_ckeditor_theme
+  media_library/view:
+    - chiara/media_library
+  media_library/widget:
+    - chiara/media_library
+ckeditor_stylesheets:
+  - css/components/media-embed-error.css
+
+# Information added by Drupal.org packaging script on 2022-02-04
+version: '9.3.5'
+project: 'drupal'
+datestamp: 1644011752
