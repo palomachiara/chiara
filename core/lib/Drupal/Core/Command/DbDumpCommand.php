@@ -48,7 +48,7 @@ class DbDumpCommand extends DbCommandBase {
   /**
    * {@inheritdoc}
    */
-  protected function execute(InputInterface $input, OutputInterface $output) {
+  protected function execute(InputInterface $input, OutputInterface $output): int {
     $connection = $this->getDatabaseConnection($input);
 
     // If not explicitly set, disable ANSI which will break generated php.
@@ -272,7 +272,7 @@ class DbDumpCommand extends DbCommandBase {
    */
   protected function getTableCollation(Connection $connection, $table, &$definition) {
     // Remove identifier quotes from the table name. See
-    // \Drupal\Core\Database\Driver\mysql\Connection::$identifierQuotes.
+    // \Drupal\mysql\Driver\Database\mysql\Connection::$identifierQuotes.
     $table = trim($connection->prefixTables('{' . $table . '}'), '"');
     $query = $connection->query("SHOW TABLE STATUS WHERE NAME = :table_name", [':table_name' => $table]);
     $data = $query->fetchAssoc();

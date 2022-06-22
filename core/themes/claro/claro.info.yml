@@ -17,7 +17,6 @@ description: 'A clean, accessible, and powerful Drupal administration theme.'
 alt text: 'Screenshot of Claro, Drupal administration theme.'
 package: Core
 # version: VERSION
-experimental: true
 libraries:
   - core/drupal.message
   - core/normalize
@@ -52,8 +51,6 @@ libraries-override:
     css:
       component:
         misc/vertical-tabs.css: false
-    js:
-      misc/vertical-tabs.js: js/vertical-tabs.js
 
   core/drupal.autocomplete:
     css:
@@ -189,7 +186,7 @@ regions:
 regions_hidden:
   - sidebar_first
 
-# Information added by Drupal.org packaging script on 2022-02-04
-version: '9.3.5'
+# Information added by Drupal.org packaging script on 2022-06-21
+version: '10.0.x-dev'
 project: 'drupal'
-datestamp: 1644011752
+datestamp: 1655825890

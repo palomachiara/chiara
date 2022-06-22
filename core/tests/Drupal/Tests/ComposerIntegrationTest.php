@@ -5,7 +5,6 @@ namespace Drupal\Tests;
 use Drupal\Composer\Plugin\VendorHardening\Config;
 use Drupal\Core\Composer\Composer;
 use Drupal\Tests\Composer\ComposerIntegrationTrait;
-use Drupal\TestTools\PhpUnitCompatibility\RunnerVersion;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -53,6 +52,9 @@ class ComposerIntegrationTest extends UnitTestCase {
    * @dataProvider providerTestComposerJson
    */
   public function testComposerTilde($path) {
+    if (preg_match('#composer/Metapackage/CoreRecommended/composer.json$#', $path)) {
+      $this->markTestSkipped("$path has tilde");
+    }
     $content = json_decode(file_get_contents($path), TRUE);
     $composer_keys = array_intersect(['require', 'require-dev'], array_keys($content));
     if (empty($composer_keys)) {
@@ -79,7 +81,7 @@ class ComposerIntegrationTest extends UnitTestCase {
     $data = [];
     $composer_json_finder = $this->getComposerJsonFinder(realpath(__DIR__ . '/../../../../'));
     foreach ($composer_json_finder->getIterator() as $composer_json) {
-      $data[] = [$composer_json->getPathname()];
+      $data[$composer_json->getPathname()] = [$composer_json->getPathname()];
     }
     return $data;
   }
@@ -266,11 +268,6 @@ class ComposerIntegrationTest extends UnitTestCase {
     $reflection = new \ReflectionProperty($class, $property);
     $reflection->setAccessible(TRUE);
     $config = $reflection->getValue();
-    // PHPUnit 9.5.3 removes 'phpunit/php-token-stream' from its dependencies.
-    // @todo remove the check below when PHPUnit 9 is the minimum.
-    if (RunnerVersion::getMajor() >= 9) {
-      unset($config['phpunit/php-token-stream']);
-    }
     foreach (array_keys($config) as $package) {
       $this->assertContains(strtolower($package), $packages);
     }

@@ -138,6 +138,21 @@ $databases = [];
  * request as needed.  The fourth line creates a new database with a name of
  * "extra".
  *
+ * For MySQL, MariaDB or equivalent databases the 'isolation_level' option can
+ * be set. The recommended transaction isolation level for Drupal sites is
+ * 'READ COMMITTED'. The 'REPEATABLE READ' option is supported but can result
+ * in deadlocks, the other two options are 'READ UNCOMMITTED' and 'SERIALIZABLE'.
+ * They are available but not supported; use them at your own risk. For more
+ * info:
+ * https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html
+ *
+ * On your settings.php, change the isolation level:
+ * @code
+ * $databases['default']['default']['init_commands'] = [
+ *   'isolation_level' => 'SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+ * ];
+ * @endcode
+ *
  * You can optionally set a prefix for all database table names by using the
  * 'prefix' setting. If a prefix is specified, the table name will be prepended
  * with its value. Be sure to use valid database characters only, usually
@@ -170,9 +185,9 @@ $databases = [];
  * information on these defaults and the potential issues.
  *
  * More details can be found in the constructor methods for each driver:
- * - \Drupal\Core\Database\Driver\mysql\Connection::__construct()
- * - \Drupal\Core\Database\Driver\pgsql\Connection::__construct()
- * - \Drupal\Core\Database\Driver\sqlite\Connection::__construct()
+ * - \Drupal\mysql\Driver\Database\mysql\Connection::__construct()
+ * - \Drupal\pgsql\Driver\Database\pgsql\Connection::__construct()
+ * - \Drupal\sqlite\Driver\Database\sqlite\Connection::__construct()
  *
  * Sample Database configuration format for PostgreSQL (pgsql):
  * @code
@@ -703,6 +718,8 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * @endcode
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
+ *
+ * @see https://www.drupal.org/docs/installing-drupal/trusted-host-settings
  */
 
 /**
@@ -769,4 +786,3 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
-$config['system.logging']['error_level'] = 'verbose';

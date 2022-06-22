@@ -5,30 +5,42 @@
 * @preserve
 **/
 
-(function (Drupal, Backbone, Modernizr) {
+(function (Drupal, Backbone) {
   Drupal.contextual.RegionView = Backbone.View.extend({
-    events: function events() {
-      var mapping = {
-        mouseenter: function mouseenter() {
-          this.model.set('regionIsHovered', true);
+    events() {
+      let touchStart = false;
+      return {
+        touchstart() {
+          touchStart = true;
         },
-        mouseleave: function mouseleave() {
-          this.model.close().blur().set('regionIsHovered', false);
+
+        mouseenter() {
+          if (!touchStart) {
+            this.model.set('regionIsHovered', true);
+          }
+        },
+
+        mouseleave() {
+          if (!touchStart) {
+            this.model.close().blur().set('regionIsHovered', false);
+          }
+        },
+
+        mousemove() {
+          touchStart = false;
         }
+
       };
-
-      if (Modernizr.touchevents) {
-        mapping = {};
-      }
-
-      return mapping;
     },
-    initialize: function initialize() {
+
+    initialize() {
       this.listenTo(this.model, 'change:hasFocus', this.render);
     },
-    render: function render() {
+
+    render() {
       this.$el.toggleClass('focus', this.model.get('hasFocus'));
       return this;
     }
+
   });
-})(Drupal, Backbone, Modernizr);
+})(Drupal, Backbone);

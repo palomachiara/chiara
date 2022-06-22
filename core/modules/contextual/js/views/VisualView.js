@@ -5,39 +5,48 @@
 * @preserve
 **/
 
-(function (Drupal, Backbone, Modernizr) {
+(function (Drupal, Backbone) {
   Drupal.contextual.VisualView = Backbone.View.extend({
-    events: function events() {
-      var touchEndToClick = function touchEndToClick(event) {
+    events() {
+      const touchEndToClick = function (event) {
         event.preventDefault();
         event.target.click();
       };
 
-      var mapping = {
-        'click .trigger': function clickTrigger() {
+      let touchStart = false;
+      return {
+        touchstart() {
+          touchStart = true;
+        },
+
+        mouseenter() {
+          if (!touchStart) {
+            this.model.focus();
+          }
+        },
+
+        mousemove() {
+          touchStart = false;
+        },
+
+        'click .trigger': function () {
           this.model.toggleOpen();
         },
         'touchend .trigger': touchEndToClick,
-        'click .contextual-links a': function clickContextualLinksA() {
+        'click .contextual-links a': function () {
           this.model.close().blur();
         },
         'touchend .contextual-links a': touchEndToClick
       };
-
-      if (!Modernizr.touchevents) {
-        mapping.mouseenter = function () {
-          this.model.focus();
-        };
-      }
-
-      return mapping;
     },
-    initialize: function initialize() {
+
+    initialize() {
       this.listenTo(this.model, 'change', this.render);
     },
-    render: function render() {
-      var isOpen = this.model.get('isOpen');
-      var isVisible = this.model.get('isLocked') || this.model.get('regionIsHovered') || isOpen;
+
+    render() {
+      const isOpen = this.model.get('isOpen');
+      const isVisible = this.model.get('isLocked') || this.model.get('regionIsHovered') || isOpen;
       this.$el.toggleClass('open', isOpen).find('.trigger').toggleClass('visually-hidden', !isVisible);
 
       if ('isOpen' in this.model.changed) {
@@ -46,5 +55,6 @@
 
       return this;
     }
+
   });
-})(Drupal, Backbone, Modernizr);
+})(Drupal, Backbone);

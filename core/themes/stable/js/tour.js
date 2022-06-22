@@ -5,40 +5,26 @@
 * @preserve
 **/
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-(function (Drupal) {
-  Drupal.tour.convertToJoyrideMarkup = function (shepherdTour) {
-    var changeTag = function changeTag(element, tag) {
+(Drupal => {
+  Drupal.tour.convertToJoyrideMarkup = shepherdTour => {
+    const changeTag = (element, tag) => {
       if (element) {
-        var newTagElement = document.createElement(tag);
-
-        _toConsumableArray(element.attributes).forEach(function (attr) {
+        const newTagElement = document.createElement(tag);
+        [...element.attributes].forEach(attr => {
           newTagElement.setAttribute(attr.name, attr.value);
         });
-
         newTagElement.innerHTML = element.innerHTML;
         element.parentNode.replaceChild(newTagElement, element);
       }
     };
 
-    var shepherdElement = shepherdTour.currentStep.el;
-    var shepherdContent = shepherdElement.querySelector('.shepherd-content');
-    var shepherdCancel = shepherdElement.querySelector('.shepherd-cancel-icon');
-    var shepherdTitle = shepherdElement.querySelector('.shepherd-title');
-    var shepherdText = shepherdElement.querySelector('.shepherd-text');
-    var shepherdNext = shepherdElement.querySelector('footer .button');
-    var tourProgress = shepherdElement.querySelector('.tour-progress');
+    const shepherdElement = shepherdTour.currentStep.el;
+    const shepherdContent = shepherdElement.querySelector('.shepherd-content');
+    const shepherdCancel = shepherdElement.querySelector('.shepherd-cancel-icon');
+    const shepherdTitle = shepherdElement.querySelector('.shepherd-title');
+    const shepherdText = shepherdElement.querySelector('.shepherd-text');
+    const shepherdNext = shepherdElement.querySelector('footer .button');
+    const tourProgress = shepherdElement.querySelector('.tour-progress');
     shepherdElement.classList.add('joyride-tip-guide');
     shepherdContent.classList.add('joyride-content-wrapper');
     shepherdNext.classList.add('joyride-next-tip');
@@ -51,38 +37,24 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     shepherdCancel.setAttribute('role', 'button');
     shepherdElement.setAttribute('data-index', shepherdTour.currentStep.options.index);
     shepherdElement.querySelector('footer').remove();
-
-    if (shepherdElement.classList.contains('tip-uses-get-output')) {
-      shepherdText.appendChild(shepherdNext);
-      shepherdText.appendChild(shepherdCancel);
-      shepherdContent.querySelector('.shepherd-header').remove();
-      Array.from(shepherdText.children).forEach(function (node) {
-        if (node.tagName === 'P' && node.textContent === '' && node.classList.length === 0) {
-          node.remove();
-        }
-      });
-      shepherdContent.innerHTML = shepherdText.innerHTML;
-    } else {
-      shepherdContent.insertBefore(shepherdTitle, shepherdContent.firstChild);
-      shepherdContent.insertBefore(tourProgress, shepherdText.nextSibling);
-      shepherdContent.appendChild(shepherdCancel);
-      shepherdContent.querySelector('.shepherd-header').remove();
-      shepherdContent.insertBefore(shepherdNext, tourProgress.nextSibling);
-      shepherdCancel.innerHTML = '<span aria-hidden="true">×</span>';
-      shepherdTitle.classList.add('tour-tip-label');
-      changeTag(shepherdTitle, 'h2');
-      shepherdText.outerHTML = shepherdText.innerHTML;
-    }
-
+    shepherdContent.insertBefore(shepherdTitle, shepherdContent.firstChild);
+    shepherdContent.insertBefore(tourProgress, shepherdText.nextSibling);
+    shepherdContent.appendChild(shepherdCancel);
+    shepherdContent.querySelector('.shepherd-header').remove();
+    shepherdContent.insertBefore(shepherdNext, tourProgress.nextSibling);
+    shepherdCancel.innerHTML = '<span aria-hidden="true">×</span>';
+    shepherdTitle.classList.add('tour-tip-label');
+    changeTag(shepherdTitle, 'h2');
+    shepherdText.outerHTML = shepherdText.innerHTML;
     changeTag(shepherdElement.querySelector('.joyride-close-tip'), 'a');
     changeTag(shepherdElement.querySelector('.joyride-next-tip'), 'a');
-    var shepherdArrow = shepherdElement.querySelector('.shepherd-arrow');
+    const shepherdArrow = shepherdElement.querySelector('.shepherd-arrow');
 
     if (shepherdArrow) {
       shepherdArrow.classList.add('joyride-nub');
 
       if (shepherdTour.currentStep.options.attachTo.on) {
-        var stepToTipPosition = {
+        const stepToTipPosition = {
           bottom: 'top',
           top: 'bottom',
           left: 'right',
@@ -93,17 +65,17 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       changeTag(shepherdArrow, 'span');
     } else {
-      var nub = document.createElement('span');
+      const nub = document.createElement('span');
       nub.classList.add('joyride-nub');
       nub.setAttribute('style', 'display: none;');
       shepherdElement.insertBefore(nub, shepherdElement.firstChild);
     }
 
-    shepherdElement.querySelector('.joyride-next-tip').addEventListener('click', function (e) {
+    shepherdElement.querySelector('.joyride-next-tip').addEventListener('click', e => {
       e.preventDefault();
       shepherdTour.next();
     });
-    shepherdElement.querySelector('.joyride-close-tip').addEventListener('click', function (e) {
+    shepherdElement.querySelector('.joyride-close-tip').addEventListener('click', e => {
       e.preventDefault();
       shepherdTour.cancel();
     });

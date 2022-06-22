@@ -140,16 +140,12 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
   /**
    * Constructs a WizardPluginBase object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeBundleInfoInterface $bundle_info_service, MenuParentFormSelectorInterface $parent_form_selector = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeBundleInfoInterface $bundle_info_service, MenuParentFormSelectorInterface $parent_form_selector) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->bundleInfoService = $bundle_info_service;
     $this->base_table = $this->definition['base_table'];
 
-    if (!$parent_form_selector) {
-      @trigger_error('Calling ' . __METHOD__ . '() without the $parent_form_selector argument is deprecated in drupal:9.3.0 and the $parent_form_selector argument will be required in drupal:10.0.0. See https://www.drupal.org/node/3027559', E_USER_DEPRECATED);
-      $parent_form_selector = \Drupal::service('menu.parent_form_selector');
-    }
     $this->parentFormSelector = $parent_form_selector;
 
     $entity_types = \Drupal::entityTypeManager()->getDefinitions();
@@ -623,7 +619,7 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
    * available).
    */
   protected function buildFilters(&$form, FormStateInterface $form_state) {
-    module_load_include('inc', 'views_ui', 'admin');
+    \Drupal::moduleHandler()->loadInclude('views_ui', 'inc', 'admin');
 
     $bundles = $this->bundleInfoService->getBundleInfo($this->entityTypeId);
     // If the current base table support bundles and has more than one (like user).
@@ -928,7 +924,7 @@ abstract class WizardPluginBase extends PluginBase implements WizardInterface {
       // Figure out the table where $bundle_key lives. It may not be the same as
       // the base table for the view; the taxonomy vocabulary machine_name, for
       // example, is stored in taxonomy_vocabulary, not taxonomy_term_data.
-      module_load_include('inc', 'views_ui', 'admin');
+      \Drupal::moduleHandler()->loadInclude('views_ui', 'inc', 'admin');
       $fields = Views::viewsDataHelper()->fetchFields($this->base_table, 'filter');
       $table = FALSE;
       if (isset($fields[$this->base_table . '.' . $bundle_key])) {

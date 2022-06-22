@@ -2,6 +2,8 @@ name: starterkit_theme
 type: theme
 'base theme': stable9
 hidden: true
+starterkit: true
+# version: VERSION
 libraries:
   - starterkit_theme/base
   - starterkit_theme/messages
@@ -26,7 +28,7 @@ libraries-extend:
 ckeditor_stylesheets:
   - css/components/media-embed-error.css
 
-# Information added by Drupal.org packaging script on 2022-02-04
-version: '9.3.5'
+# Information added by Drupal.org packaging script on 2022-06-21
+version: '10.0.x-dev'
 project: 'drupal'
-datestamp: 1644011752
+datestamp: 1655825890

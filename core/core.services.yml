@@ -343,9 +343,6 @@ services:
   config.storage.sync:
     class: Drupal\Core\Config\FileStorage
     factory: Drupal\Core\Config\FileStorageFactory::getSync
-  config.storage.staging:
-    alias: config.storage.sync
-    deprecated: The "%alias_id%" service is deprecated in drupal:8.0.0 and is removed from drupal:10.0.0. Use the "config.storage.sync" service instead. See https://www.drupal.org/node/2574957
   config.storage.snapshot:
     class: Drupal\Core\Config\DatabaseStorage
     arguments: ['@database', config_snapshot]
@@ -716,7 +713,7 @@ services:
     class: Drupal\Core\Menu\StaticMenuLinkOverrides
     arguments: ['@config.factory']
   request_stack:
-    class: Drupal\Core\Http\RequestStack
+    class: Symfony\Component\HttpFoundation\RequestStack
     tags:
       - { name: persist }
   current_route_match:
@@ -725,28 +722,6 @@ services:
   event_dispatcher:
     class: Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
     arguments: ['@service_container']
-  app.root:
-    class: \SplString
-    factory: ['@app.root.factory', 'get']
-    deprecated: The "%service_id%" service is deprecated in drupal:9.0.0 and is removed from drupal:10.0.0. Use the app.root parameter instead. See https://www.drupal.org/node/3080612
-    tags:
-      - { name: parameter_service }
-  app.root.factory:
-    class: Drupal\Core\AppRootFactory
-    arguments: ['@kernel']
-    public: false
-    deprecated: The "%service_id%" service is deprecated in drupal:9.0.0 and is removed from drupal:10.0.0. Use the app.root parameter instead. See https://www.drupal.org/node/3080612
-  site.path:
-    class: \SplString
-    factory: ['@site.path.factory', 'get']
-    deprecated: The "%service_id%" service is deprecated in drupal:9.0.0 and is removed from drupal:10.0.0. Use the site.path parameter instead. See https://www.drupal.org/node/3080612
-    tags:
-      - { name: parameter_service }
-  site.path.factory:
-    class: Drupal\Core\SitePathFactory
-    arguments: ['@kernel']
-    public: false
-    deprecated: The "%service_id%" service is deprecated in drupal:9.0.0 and is removed from drupal:10.0.0. Use the site.path parameter instead. See https://www.drupal.org/node/3080612
   controller_resolver:
     class: Drupal\Core\Controller\ControllerResolver
     arguments: ['@psr7.http_message_factory', '@class_resolver']
@@ -758,7 +733,7 @@ services:
     class: Drupal\Core\Controller\TitleResolver
     arguments: ['@controller_resolver', '@string_translation', '@http_kernel.controller.argument_resolver']
   http_kernel:
-    class: Stack\StackedHttpKernel
+    class: Drupal\Core\StackMiddleware\StackedHttpKernel
   http_kernel.basic:
     class: Symfony\Component\HttpKernel\HttpKernel
     arguments: ['@event_dispatcher', '@controller_resolver', '@request_stack', '@http_kernel.controller.argument_resolver']
@@ -812,16 +787,16 @@ services:
   psr7.http_foundation_factory:
     class: Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory
   psr17.server_request_factory:
-    class: Laminas\Diactoros\ServerRequestFactory
+    class: GuzzleHttp\Psr7\HttpFactory
     public: false
   psr17.stream_factory:
-    class: Laminas\Diactoros\StreamFactory
+    class: GuzzleHttp\Psr7\HttpFactory
     public: false
   psr17.uploaded_file_factory:
-    class: Laminas\Diactoros\UploadedFileFactory
+    class: GuzzleHttp\Psr7\HttpFactory
     public: false
   psr17.response_factory:
-    class: Laminas\Diactoros\ResponseFactory
+    class: GuzzleHttp\Psr7\HttpFactory
     public: false
   psr7.http_message_factory:
     class: Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory
@@ -1074,6 +1049,11 @@ services:
     class: Drupal\Core\Entity\Enhancer\EntityRouteEnhancer
     tags:
       - { name: route_enhancer, priority: 20 }
+  route_enhancer.entity_bundle:
+    class: Drupal\Core\Entity\Enhancer\EntityBundleRouteEnhancer
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: route_enhancer }
   route_enhancer.entity_revision:
     class: Drupal\Core\Routing\Enhancer\EntityRevisionRouteEnhancer
     tags:
@@ -1180,13 +1160,6 @@ services:
     class: Drupal\Core\Entity\EntityAccessCheck
     tags:
       - { name: access_check, applies_to: _entity_access }
-  access_check.entity_bundles:
-    # Deprecated in drupal:9.2.0 and is removed from drupal:10.0.0. Specify the
-    # list of bundles in the entity parameter, under "bundle" key as a sequence,
-    # instead. See https://www.drupal.org/node/3155569.
-    class: Drupal\Core\Entity\EntityBundleAccessCheck
-    tags:
-      - { name: access_check, applies_to: _entity_bundles }
   access_check.entity_create:
     class: Drupal\Core\Entity\EntityCreateAccessCheck
     arguments: ['@entity_type.manager']
@@ -1224,10 +1197,10 @@ services:
       - { name: access_check, needs_incoming_request: TRUE }
   maintenance_mode:
     class: Drupal\Core\Site\MaintenanceMode
-    arguments: ['@state']
+    arguments: ['@state', '@config.factory']
   maintenance_mode_subscriber:
     class: Drupal\Core\EventSubscriber\MaintenanceModeSubscriber
-    arguments: ['@maintenance_mode', '@config.factory', '@string_translation', '@url_generator', '@current_user', '@bare_html_page_renderer', '@messenger']
+    arguments: ['@maintenance_mode', '@config.factory', '@string_translation', '@url_generator', '@current_user', '@bare_html_page_renderer', '@messenger', '@event_dispatcher']
     tags:
       - { name: event_subscriber }
   route_access_response_subscriber:
@@ -1281,6 +1254,7 @@ services:
     class: Drupal\Core\EventSubscriber\ConfigImportSubscriber
     tags:
       - { name: event_subscriber }
+      - { name: service_collector, tag: 'module_install.uninstall_validator', call: addUninstallValidator }
     arguments: ['@theme_handler', '@extension.list.module']
   config_snapshot_subscriber:
     class: Drupal\Core\EventSubscriber\ConfigSnapshotSubscriber
@@ -1432,83 +1406,6 @@ services:
   date.formatter:
     class: Drupal\Core\Datetime\DateFormatter
     arguments: ['@entity_type.manager', '@language_manager', '@string_translation', '@config.factory', '@request_stack']
-  feed.bridge.reader:
-    class: Drupal\Component\Bridge\ZfExtensionManagerSfContainer
-    calls:
-      - [setContainer, ['@service_container']]
-      - [setStandalone, ['\Laminas\Feed\Reader\StandaloneExtensionManager']]
-    arguments: ['feed.reader.']
-  feed.bridge.writer:
-    class: Drupal\Component\Bridge\ZfExtensionManagerSfContainer
-    calls:
-      - [setContainer, ['@service_container']]
-      - [setStandalone, ['\Laminas\Feed\Writer\StandaloneExtensionManager']]
-    arguments: ['feed.writer.']
-# Laminas Feed reader plugins. Plugin instances should not be shared.
-  feed.reader.dublincoreentry:
-    class: Laminas\Feed\Reader\Extension\DublinCore\Entry
-    shared: false
-  feed.reader.dublincorefeed:
-    class: Laminas\Feed\Reader\Extension\DublinCore\Feed
-    shared: false
-  feed.reader.contententry:
-    class: Laminas\Feed\Reader\Extension\Content\Entry
-    shared: false
-  feed.reader.atomentry:
-    class: Laminas\Feed\Reader\Extension\Atom\Entry
-    shared: false
-  feed.reader.atomfeed:
-    class: Laminas\Feed\Reader\Extension\Atom\Feed
-    shared: false
-  feed.reader.slashentry:
-    class: Laminas\Feed\Reader\Extension\Slash\Entry
-    shared: false
-  feed.reader.wellformedwebentry:
-    class: Laminas\Feed\Reader\Extension\WellFormedWeb\Entry
-    shared: false
-  feed.reader.threadentry:
-    class: Laminas\Feed\Reader\Extension\Thread\Entry
-    shared: false
-  feed.reader.podcastentry:
-    class: Laminas\Feed\Reader\Extension\Podcast\Entry
-    shared: false
-  feed.reader.podcastfeed:
-    class: Laminas\Feed\Reader\Extension\Podcast\Feed
-    shared: false
-# Laminas Feed writer plugins. Plugins should be set as prototype scope.
-  feed.writer.atomrendererfeed:
-    class: Laminas\Feed\Writer\Extension\Atom\Renderer\Feed
-    shared: false
-  feed.writer.contentrendererentry:
-    class: Laminas\Feed\Writer\Extension\Content\Renderer\Entry
-    shared: false
-  feed.writer.dublincorerendererentry:
-    class: Laminas\Feed\Writer\Extension\DublinCore\Renderer\Entry
-    shared: false
-  feed.writer.dublincorerendererfeed:
-    class: Laminas\Feed\Writer\Extension\DublinCore\Renderer\Feed
-    shared: false
-  feed.writer.itunesentry:
-    class: Laminas\Feed\Writer\Extension\ITunes\Entry
-    shared: false
-  feed.writer.itunesfeed:
-    class: Laminas\Feed\Writer\Extension\ITunes\Feed
-    shared: false
-  feed.writer.itunesrendererentry:
-    class: Laminas\Feed\Writer\Extension\ITunes\Renderer\Entry
-    shared: false
-  feed.writer.itunesrendererfeed:
-    class: Laminas\Feed\Writer\Extension\ITunes\Renderer\Feed
-    shared: false
-  feed.writer.slashrendererentry:
-    class: Laminas\Feed\Writer\Extension\Slash\Renderer\Entry
-    shared: false
-  feed.writer.threadingrendererentry:
-    class: Laminas\Feed\Writer\Extension\Threading\Renderer\Entry
-    shared: false
-  feed.writer.wellformedwebrendererentry:
-    class: Laminas\Feed\Writer\Extension\WellFormedWeb\Renderer\Entry
-    shared: false
   theme.manager:
     class: Drupal\Core\Theme\ThemeManager
     arguments: ['%app.root%', '@theme.negotiator', '@theme.initialization', '@module_handler']
@@ -1519,7 +1416,7 @@ services:
     arguments: ['%app.root%', '@theme_handler', '@cache.bootstrap', '@module_handler']
   theme.registry:
     class: Drupal\Core\Theme\Registry
-    arguments: ['%app.root%', '@cache.default', '@lock', '@module_handler', '@theme_handler', '@theme.initialization', null, '@cache.bootstrap', '@extension.list.module']
+    arguments: ['%app.root%', '@cache.default', '@lock', '@module_handler', '@theme_handler', '@theme.initialization', '@cache.bootstrap', '@extension.list.module']
     tags:
       - { name: needs_destruction }
     calls:
@@ -1679,6 +1576,8 @@ services:
   file.mime_type.guesser:
     class: Drupal\Core\File\MimeType\MimeTypeGuesser
     arguments: ['@stream_wrapper_manager']
+    tags:
+      - { name: service_collector, tag: mime_type_guesser, call: addMimeTypeGuesser }
     lazy: true
   file.mime_type.guesser.extension:
     class: Drupal\Core\File\MimeType\ExtensionMimeTypeGuesser
@@ -1729,6 +1628,8 @@ services:
   update.post_update_registry:
     class: Drupal\Core\Update\UpdateRegistry
     factory: ['@update.post_update_registry_factory', create]
+    tags:
+      - { name: event_subscriber }
   update.post_update_registry_factory:
     class: Drupal\Core\Update\UpdateRegistryFactory
     parent: container.trait
