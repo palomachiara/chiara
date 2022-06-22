@@ -1,8 +1,11 @@
-name: chiara
 type: theme
-base theme: stark
+base theme: bootstrap
 core: 8.x
 core_version_requirement: ^8 || ^9
+
+name: 'chiara'
+description: 'A Drupal Bootstrap 3 based sub-theme.'
+package: 'Bootstrap'
 
 regions:
   navigation: 'Navigation'
@@ -17,7 +20,6 @@ regions:
   page_top: 'Page top'
   page_bottom: 'Page bottom'
 
-# Information added by Drupal.org packaging script on 2022-02-04
-version: '9.3.5'
-project: 'drupal'
-datestamp: 1644011752
+libraries-extend:
+  bootstrap/framework:
+    - chiara/framework
