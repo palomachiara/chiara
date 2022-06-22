@@ -23,3 +23,5 @@ regions:
 libraries-extend:
   bootstrap/framework:
     - chiara/framework
+stylesheets[all][] = bootstrap/css/bootstrap.min.css
+scripts[] = bootstrap/js/bootstrap.min.js
