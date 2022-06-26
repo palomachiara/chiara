@@ -1,0 +1,22 @@
+uuid: ccd47b98-a173-4bb1-ba54-21428b5afeb7
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - chiara
+_core:
+  default_config_hash: eYL19CLDyinGTWYQfBD1DswWzglEotE_kHnHx3AxTXM
+id: chiara_powered
+theme: chiara
+region: navigation
+weight: 0
+provider: null
+plugin: system_powered_by_block
+settings:
+  id: system_powered_by_block
+  label: 'Powered by Drupal'
+  label_display: '0'
+  provider: system
+visibility: {  }

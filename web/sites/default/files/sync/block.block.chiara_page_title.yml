@@ -1,0 +1,20 @@
+uuid: 07b1381a-e4c8-46ae-974a-f7110563acbf
+langcode: en
+status: true
+dependencies:
+  theme:
+    - chiara
+_core:
+  default_config_hash: 6aOgWsNTXjqrDm98TXSAjP6qd2nCijD1xw45MrnbK-Y
+id: chiara_page_title
+theme: chiara
+region: navigation
+weight: -5
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility: {  }
