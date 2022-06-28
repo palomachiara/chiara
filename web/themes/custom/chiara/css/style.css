@@ -32,6 +32,16 @@ a {
     display: inline-block;
 }
 
+/* GENERAL ********************************/
+.home_products-container{
+  max-width: 1200px;
+  width: 100%;
+  margin: auto;
+}
+.home_products-title{
+  font-size: 44px;
+}
+
 /* PARTIAL - HEADER ********************************/
 header.header {
     position: sticky;
@@ -51,4 +61,12 @@ header.header {
 .header-links{
     display: flex;
     justify-content: center;
+}
+
+/* HOMEPAGE ********************************/
+.home_products{
+  background-color: var(--light);
+}
+.home_products-container{
+  padding: 84px 20px;
 }
