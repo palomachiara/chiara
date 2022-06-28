@@ -20,7 +20,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-font-variant-ligatures: none;
   -webkit-text-size-adjust: 100%;
-  color: var(--dark);
 }
 button {
   cursor: pointer;
@@ -38,8 +37,9 @@ a {
 }
 
 /* CONTAINER */
+.home_benefits-container,
 .home_products-container{
-  max-width: 1200px;
+  max-width: 1000px;
   width: 100%;
   margin: auto;
 }
@@ -153,4 +153,19 @@ header.header {
 }
 .home_products-title{
   margin: 0 0 44px;
+}
+.home_benefits-list{
+  margin: 0;
+  padding: 0;
+}
+.home_benefits-list li:nth-child(odd){
+  background-color: var(--dark);
+  color: var(--light);
+}
+.home_benefits-list li:nth-child(even){
+  background-color: var(--light);
+  color: var(--dark);
+}
+.home_benefits-container{
+  padding: 84px 20px;
 }
