@@ -32,14 +32,98 @@ a {
   display: inline-block;
 }
 
-/* GENERAL ********************************/
+/* BACKGROUND COLOR */
+.home_products{
+  background-color: var(--light);
+}
+
+/* CONTAINER */
 .home_products-container{
   max-width: 1200px;
   width: 100%;
   margin: auto;
 }
+
+/* PRIMARY TITLE */
 .home_products-title{
   font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  line-height: 1.3;
+}
+
+/* SECONDARY TITLE */
+/* TERCIARY TITLE */
+/* SUBTITLE */
+/* PARAGRAPH - LARGE */
+/* PARAGRAPH - SMALL */
+
+/* List */
+article#blog ol li,
+article#blog ul li {
+  margin: 0 0 12px;
+  padding-left: 30px;
+  position: relative;
+}
+
+article#blog ol li {
+  counter-increment: inst;
+}
+
+article#blog ol li:before {
+  content: '\e804';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 12px;
+  background-color: var(--dark);
+  color: var(--light);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+article#blog ol li::before {
+  content: counter(inst);
+}
+
+/* Primary */
+.home_products-title{
+  color: var(--dark);
+}
+
+/* Center */
+.home_products-title{
+  text-align: center;
+}
+
+/* BUTTON */
+/* Primary */
+/* Secondary */
+
+/* FORMULARIO ********************************/
+textarea,
+input[type="email"],
+input[type="text"] {
+  background-color: rgba(241, 239, 245, 0.05);
+  width: 100%;
+  padding: 8px 16px 8px 40px;
+  border-radius: 12px;
+  resize: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 2px solid #F1EFF5;
+  color: #F1EFF5;
 }
 
 /* PARTIAL - HEADER ********************************/
@@ -63,18 +147,10 @@ header.header {
   justify-content: center;
 }
 
-/* HOMEPAGE ********************************/
-.home_products{
-  background-color: var(--light);
-}
+/* PAGE - HOMEPAGE ********************************/
 .home_products-container{
   padding: 84px 20px;
 }
-
-/* HOMEPAGE ********************************/
-.home_products{
-  background-color: var(--light);
-}
-.home_products-container{
-  padding: 84px 20px;
+.home_products-title{
+  margin: 0 0 44px;
 }
