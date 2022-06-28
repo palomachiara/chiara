@@ -1,35 +1,35 @@
 :root {
-    --light: #E9E4F0;
-    --medium: #D3CCE3;
-    --dark: #5D4B85;
+  --light: #E9E4F0;
+  --medium: #D3CCE3;
+  --dark: #5D4B85;
 }
 body {
-    background-color: var(--light);
+  background-color: var(--light);
 }
 * {
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 100%;
-    font-variant-ligatures: none;
-    font-weight: 400;
-    margin: 0;
-    -moz-osx-font-smoothing: grayscale;
-    padding: 0;
-    text-decoration: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -webkit-font-variant-ligatures: none;
-    -webkit-text-size-adjust: 100%;
-    color: var(--dark);
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 100%;
+  font-variant-ligatures: none;
+  font-weight: 400;
+  margin: 0;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  text-decoration: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-font-variant-ligatures: none;
+  -webkit-text-size-adjust: 100%;
+  color: var(--dark);
 }
 button {
-    cursor: pointer;
+  cursor: pointer;
 }
 ul {
-    list-style: none;
+  list-style: none;
 }
 a {
-    display: inline-block;
+  display: inline-block;
 }
 
 /* GENERAL ********************************/
@@ -44,23 +44,31 @@ a {
 
 /* PARTIAL - HEADER ********************************/
 header.header {
-    position: sticky;
-    left: 0;
-    right: 0;
-    top: 0;
-    width: 100%;
-    z-index: 999;
-    background-color: var(--light);
+  position: sticky;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: var(--light);
 }
 .header-container{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
 }
 .header-links{
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+}
+
+/* HOMEPAGE ********************************/
+.home_products{
+  background-color: var(--light);
+}
+.home_products-container{
+  padding: 84px 20px;
 }
 
 /* HOMEPAGE ********************************/
