@@ -36,37 +36,56 @@ a#main-content{
 }
 
 /* BACKGROUND COLOR */
-.home_products{
+.home__products{
   background-color: var(--light);
 }
 
 /* CONTAINER */
-.home_benefits-container,
-.home_products-container{
+.carousel__container,
+.home__benefits-container,
+.home__products-container{
   max-width: 1000px;
   width: 100%;
   margin: auto;
 }
 
 /* PRIMARY TITLE */
-.home_products-title{
+.carousel__container-title{
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 1.3;
+}
+
+/* SECONDARY TITLE */
+.home__benefits-list li .home__benefits-container h3,
+.home__products-title{
   font-size: 44px;
   font-weight: 700;
   letter-spacing: 1.5px;
   line-height: 1.3;
 }
 
-/* SECONDARY TITLE */
 /* TERCIARY TITLE */
 /* SUBTITLE */
 
 /* Font */
-.home_products-title{
+.home__benefits-list li .home__benefits-container h3,
+.carousel__container-title,
+.home__products-title{
   font-family: 'Playfair Display', serif;
 }
 
 /* PARAGRAPH - LARGE */
+
 /* PARAGRAPH - SMALL */
+.home__benefits-list li:nth-child(odd) .home__benefits-container p,
+.carousel__container-p{
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  line-height: 1.3;
+}
 
 /* List */
 article#blog ol li,
@@ -75,11 +94,9 @@ article#blog ul li {
   padding-left: 30px;
   position: relative;
 }
-
 article#blog ol li {
   counter-increment: inst;
 }
-
 article#blog ol li:before {
   content: '\e804';
   position: absolute;
@@ -101,23 +118,47 @@ article#blog ol li:before {
   -ms-flex-align: center;
   align-items: center;
 }
-
 article#blog ol li::before {
   content: counter(inst);
 }
 
 /* Primary */
-.home_products-title{
+.home__benefits-list li:nth-child(odd) .home__benefits-container p,
+.home__benefits-list li:nth-child(even) .home__benefits-container h3,
+.carousel__container-title,
+.home__products-title{
   color: var(--dark);
 }
 
+/* Secondary */
+.home__benefits-list li:nth-child(odd) .home__benefits-container p,
+.home__benefits-list li:nth-child(odd) .home__benefits-container h3{
+  color: var(--light);
+}
+
 /* Center */
-.home_products-title{
+.home__products-title{
   text-align: center;
 }
 
 /* BUTTON */
+.carousel__container-btn{
+  padding: 8px 24px;
+  border-radius: 60px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .5px;
+}
 /* Primary */
+.carousel__container-btn{
+  background-color: var(--dark);
+  color: var(--light);
+}
+.carousel__container-btn:hover{
+  background-color: var(--light);
+  color: var(--dark);
+}
 /* Secondary */
 
 /* FORMULARIO ********************************/
@@ -138,13 +179,14 @@ input[type="text"] {
 
 /* PARTIAL - HEADER ********************************/
 header.header {
-  position: sticky;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
   width: 100%;
   z-index: 999;
   background-color: var(--light);
+  opacity: .5;
 }
 .header-container{
   display: flex;
@@ -158,58 +200,14 @@ header.header {
 }
 
 /* PAGE - HOMEPAGE ********************************/
-@keyframes tonext {
-  75% {
-    left: 0;
-  }
-  95% {
-    left: 100%;
-  }
-  98% {
-    left: 100%;
-  }
-  99% {
-    left: 0;
-  }
-}
-@keyframes tostart {
-  75% {
-    left: 0;
-  }
-  95% {
-    left: -300%;
-  }
-  98% {
-    left: -300%;
-  }
-  99% {
-    left: 0;
-  }
-}
-@keyframes snap {
-  96% {
-    scroll-snap-align: center;
-  }
-  97% {
-    scroll-snap-align: none;
-  }
-  99% {
-    scroll-snap-align: none;
-  }
-  100% {
-    scroll-snap-align: center;
-  }
-}
-ol, li {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+@keyframes tonext { 75% {left: 0;} 95% {left: 100%;} 98% {left: 100%;} 99% {left: 0;} }
+@keyframes tostart { 75% {left: 0;} 95% {left: -300%;} 98% {left: -300%;} 99% {left: 0;} }
+@keyframes snap { 96% {scroll-snap-align: center;} 97% {scroll-snap-align: none;} 99% {scroll-snap-align: none;} 100% {scroll-snap-align: center;} }
 .carousel {
+  -ms-overflow-style: none;
   position: relative;
-  padding-top: 75%;
-  filter: drop-shadow(0 0 10px #0003);
   perspective: 100px;
+  height: 80vh;
 }
 .carousel__viewport {
   position: absolute;
@@ -218,29 +216,10 @@ ol, li {
   bottom: 0;
   left: 0;
   display: flex;
-  overflow-x: scroll;
-  counter-reset: item;
+  overflow: hidden;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
-}
-.carousel__slide {
-  position: relative;
-  flex: 0 0 100%;
-  width: 100%;
-  background-color: #f99;
-  counter-increment: item;
-}
-.carousel__slide:nth-child(even) {
-  background-color: #99f;
-}
-.carousel__slide:before {
-  content: counter(item);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate3d(-50%,-40%,70px);
-  color: #fff;
-  font-size: 2em;
+  list-style: none;
 }
 .carousel__snapper {
   position: absolute;
@@ -249,110 +228,87 @@ ol, li {
   width: 100%;
   height: 100%;
   scroll-snap-align: center;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
 }
-@media (hover: hover) {
-  .carousel__snapper {
-    animation-name: tonext, snap;
-    animation-timing-function: ease;
-    animation-duration: 4s;
-    animation-iteration-count: infinite;
-  }
-  .carousel__slide:last-child .carousel__snapper {
-    animation-name: tostart, snap;
-  }
+.carousel__container{
+  padding: 44px 20px;
+}
+.carousel__container-p{
+  margin: 14px 0 32px;
 }
 @media (prefers-reduced-motion: reduce) {
   .carousel__snapper {
     animation-name: none;
   }
 }
-.carousel:hover .carousel__snapper,
-.carousel:focus-within .carousel__snapper {
-  animation-name: none;
+.carousel__slide {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
 }
 .carousel__navigation {
   position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  right: 20px;
+  bottom: 20px;
   text-align: center;
 }
-.carousel__navigation-list,
+.carousel__navigation-list{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .carousel__navigation-item {
-  display: inline-block;
+  display: flex;
+  padding: 0 0 0 8px;
 }
 .carousel__navigation-button {
-  display: inline-block;
-  width: 1.5rem;
-  height: 1.5rem;
-  background-color: #333;
-  background-clip: content-box;
-  border: 0.25rem solid transparent;
+  display: flex;
+  min-width: 14px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--light);
   border-radius: 50%;
   font-size: 0;
-  transition: transform 0.1s;
 }
-.carousel::before,
-.carousel::after,
-.carousel__prev,
-.carousel__next {
-  position: absolute;
-  top: 0;
-  margin-top: 37.5%;
-  width: 4rem;
-  height: 4rem;
-  transform: translateY(-50%);
-  border-radius: 50%;
-  font-size: 0;
-  outline: 0;
-}
-.carousel::before,
-.carousel__prev {
-  left: -1rem;
-}
-.carousel::after,
-.carousel__next {
-  right: -1rem;
-}
-.carousel::before,
-.carousel::after {
-  content: '';
-  z-index: 1;
-  background-color: #333;
-  background-size: 1.5rem 1.5rem;
-  background-repeat: no-repeat;
-  background-position: center center;
-  color: #fff;
-  font-size: 2.5rem;
-  line-height: 4rem;
-  text-align: center;
-  pointer-events: none;
-}
-.carousel::before {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='0,50 80,100 80,0' fill='%23fff'/%3E%3C/svg%3E");
-}
-.carousel::after {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='100,50 20,100 20,0' fill='%23fff'/%3E%3C/svg%3E");
-}
-
-.home_products-container{
+.home__products-container{
   padding: 84px 20px;
 }
-.home_products-title{
+.home__products-title{
   margin: 0 0 44px;
 }
-.home_benefits-list{
+.home__benefits-list{
   margin: 0;
   padding: 0;
 }
-.home_benefits-list li:nth-child(odd){
+.home__benefits-list li:nth-child(odd){
   background-color: var(--dark);
   color: var(--light);
 }
-.home_benefits-list li:nth-child(even){
+.home__benefits-list li:nth-child(even){
   background-color: var(--light);
   color: var(--dark);
 }
-.home_benefits-container{
+.home__benefits-container{
   padding: 84px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.home__benefits-list li:nth-child(even) .home__benefits-container{
+  flex-direction: row-reverse;
+}
+.home__benefits-list li .home__benefits-container > div,
+.home__benefits-list li .home__benefits-container img{
+  width: 100%;
+  max-width: 50%;
+  height: auto;
+}
+.home__benefits-list li:nth-child(odd) .home__benefits-container > div{
+  padding-right: 44px;
+}
+.home__benefits-list li:nth-child(even) .home__benefits-container > div{
+  padding-left: 44px;
 }
