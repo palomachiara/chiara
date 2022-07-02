@@ -36,11 +36,17 @@ a#main-content{
 }
 
 /* BACKGROUND COLOR */
+.blog__content,
 .home__products{
   background-color: var(--light);
 }
+.blog__header{
+  background: linear-gradient(0.12turn, var(--medium), var(--light));
+}
 
 /* CONTAINER */
+.blog__content-container,
+.blog__header-container,
 .carousel__container,
 .home__benefits-container,
 .home__products-container{
@@ -48,8 +54,13 @@ a#main-content{
   width: 100%;
   margin: auto;
 }
+/* HEADER SPACING */
+.blog__header{
+  padding-top: 59px;
+}
 
 /* PRIMARY TITLE */
+.blog__header-title,
 .carousel__container-title{
   font-size: 64px;
   font-weight: 700;
@@ -58,6 +69,7 @@ a#main-content{
 }
 
 /* SECONDARY TITLE */
+.blog__content-txt h2,
 .home__benefits-list li .home__benefits-container h3,
 .home__products-title{
   font-size: 44px;
@@ -67,9 +79,26 @@ a#main-content{
 }
 
 /* TERCIARY TITLE */
+.blog__content-txt h3{
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  line-height: 1.3;
+}
+
 /* SUBTITLE */
+.blog__content-txt h4{
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  line-height: 1.3;
+}
 
 /* Font */
+.blog__content-txt h4,
+.blog__content-txt h3,
+.blog__content-txt h2,
+.blog__header-title,
 .home__benefits-list li .home__benefits-container h3,
 .carousel__container-title,
 .home__products-title{
@@ -79,6 +108,7 @@ a#main-content{
 /* PARAGRAPH - LARGE */
 
 /* PARAGRAPH - SMALL */
+.blog__content-txt p,
 .home__benefits-list li:nth-child(odd) .home__benefits-container p,
 .carousel__container-p{
   font-size: 16px;
@@ -123,6 +153,8 @@ article#blog ol li::before {
 }
 
 /* Primary */
+.blog__content-txt,
+.blog__header-title,
 .home__benefits-list li:nth-child(odd) .home__benefits-container p,
 .home__benefits-list li:nth-child(even) .home__benefits-container h3,
 .carousel__container-title,
@@ -311,4 +343,22 @@ header.header {
 }
 .home__benefits-list li:nth-child(even) .home__benefits-container > div{
   padding-left: 44px;
+}
+
+/* PAGE - BLOG ********************************/
+.blog__header-container{
+  padding: 84px 20px;
+}
+.blog__content-container{
+  padding: 64px 20px;
+  display: flex;
+}
+.blog__content-container > div{
+  width: 50%;
+}
+.blog__content-img{
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 44px;
 }
