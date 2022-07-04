@@ -1,0 +1,16 @@
+<section class="about-us__info">
+  <div class="about-us__info-container">
+    {% if node.field_image.value %}
+      <div class="about-us__info-img">
+        <img src="{{ file_url(node.field_image.entity.fileuri) }}" alt="" />
+      </div>
+    {% endif %}
+    <div class="about-us__info-content">
+      <h1 class="about-us__info-title">{{ node.title.value }}</h1>
+      {% if node.field_description.value %}
+        <div class="about-us__info-txt">{{ node.field_description.value|raw }}</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+

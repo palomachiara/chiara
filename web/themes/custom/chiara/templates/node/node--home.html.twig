@@ -1,14 +1,58 @@
-<section>
+{% if node.field_banner.0 %}
+  <section class="carousel" aria-label="Gallery">
+    <ol class="carousel__viewport">
+      {% for key,item in node.field_banner %}
+        <li id="carousel__slide{{ key }}" tabindex="0" class="carousel__slide">
+          <div class="carousel__snapper" {% if item.entity.field_background_image.value %}style="background-image: url('{{ file_url(item.entity.field_background_image.entity.fileuri) }}')"{% endif %}>
+            <div class="carousel__container">
+              <h1 class="carousel__container-title">{{ item.entity.name.value }}</h1>
+              <div class="carousel__container-p">{{ item.entity.description.value|raw }}</div>
+              {% if item.entity.field_link.value %}
+                {{ link(item.entity.field_link.title, item.entity.field_link.uri, { 'class':['carousel__container-btn']} ) }}
+              {% endif %}
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ol>
+    <aside class="carousel__navigation">
+      <ol class="carousel__navigation-list">
+        {% for key,item in node.field_banner %}
+          <li class="carousel__navigation-item {{ key }}">
+            <a href="#carousel__slide{{ key }}" class="carousel__navigation-button">Go to slide {{ key }}</a>
+          </li>
+        {% endfor %}
+      </ol>
+    </aside>
+  </section>
+{% endif %}
 
-</section>
-
-<section class="home_products">
-  <div class="home_products-container">
+<section class="home__products">
+  <div class="home__products-container">
     {% if node.field_title_2.value %}
-      <h2 class="home_products-title">{{ node.field_title_2.value }}</h2>
+      <h2 class="home__products-title">{{ node.field_title_2.value }}</h2>
     {% endif %}
 
   </div>
 </section>
 
+{% if node.field_benefits.0 %}
+  <section class="home__benefits">
+    <ul class="home__benefits-list">
+      {% for key,item in node.field_benefits %}
+        <li>
+          <div class="home__benefits-container">
+            <div>
+              <h3>{{ item.entity.name.value }}</h3>
+              {{ item.entity.description.value|raw }}
+            </div>
+            {% if item.entity.field_image.value %}
+              <img src="{{ file_url(item.entity.field_image.entity.fileuri) }}" alt="{{ item.entity.name.value }}">
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endif %}
 

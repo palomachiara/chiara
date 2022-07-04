@@ -42,42 +42,45 @@
  * @see html.html.twig
  */
 #}
+<div class="layout-container">
 
-<header class="header">
-  <div class="header-container">
-    {{ page.header }}
+  <header class="header" role="banner">
+    <div class="header-container">
+      {{ page.header }}
+    </div>
+  </header>
+
+  {{ page.primary_menu }}
+  {{ page.secondary_menu }}
+  {{ page.breadcrumb }}
+  {{ page.highlighted }}
+  {{ page.help }}
+
+  <main role="main">
+    <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
+
+    <div class="layout-content">
+      {{ page.content }}
+    </div>{# /.layout-content #}
+
     {% if page.sidebar_first %}
-      <div class="header-links">
+      <aside class="layout-sidebar-first" role="complementary">
         {{ page.sidebar_first }}
-      </div>
+      </aside>
     {% endif %}
-    {#
+
     {% if page.sidebar_second %}
       <aside class="layout-sidebar-second" role="complementary">
         {{ page.sidebar_second }}
       </aside>
     {% endif %}
-    #}
-  </div>
-</header>
 
-{#
-{{ page.primary_menu }}
-{{ page.secondary_menu }}
-{{ page.breadcrumb }}
-{{ page.highlighted }}
-{{ page.help }}
-#}
+  </main>
 
-<main role="main">
-  <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
-  <div class="main-content">
-    {{ page.content }}
-  </div>
-</main>
+  {% if page.footer %}
+    <footer role="contentinfo">
+      {{ page.footer }}
+    </footer>
+  {% endif %}
 
-{% if page.footer %}
-  <footer role="contentinfo">
-    {{ page.footer }}
-  </footer>
-{% endif %}
+</div>{# /.layout-container #}

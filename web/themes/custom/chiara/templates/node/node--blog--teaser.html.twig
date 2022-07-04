@@ -1,0 +1,4 @@
+{% if node.field_image.value %}
+  <img src="{{ file_url(node.field_image.entity.fileuri) }}" alt="" />
+{% endif %}
+<h2>{{ node.title.value }}</h2>
